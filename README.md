@@ -1,6 +1,6 @@
 # sell_demo
 
-> A Vue.js project
+> 外卖App主要页面的Vue实现
 
 ## Build Setup
 

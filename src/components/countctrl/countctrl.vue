@@ -13,23 +13,23 @@
 <script>
 import Vue from 'vue';
 export default {
-  props:{
-    food:{
-      type:Object
+  props: {
+    food: {
+      type: Object
     }
   },
-  created:function(){
+  created: function() {
 
   },
-  methods:{
-    addCount:function(){
-      if (!this.food.count){
+  methods: {
+    addCount: function() {
+      if (!this.food.count) {
         Vue.set(this.food, 'count', 1);
-      }else{
-      this.food.count++;
+      } else {
+        this.food.count++;
       }
     },
-    decreaseCount:function(){
+    decreaseCount: function() {
       this.food.count--;
     }
   }

@@ -1,10 +1,10 @@
 <!--
   1、外部需要传入参数：
-  1.1、ratings:评价数组，计算评价个数
-  1.2、个性化标签名称，默认为：All,POSITIVE,NAGETIVE
+    1.1、ratings:评价数组，计算评价个数
+    1.2、个性化标签名称，默认为：All,POSITIVE,NAGETIVE
   2、触发调用外部方法：
-  2.1、someonly(Boolean)，只看内容评价，参数为bool值
-  2.2、relType(Number)，2为All，0为POSITIVE，1为NAGETIVE
+    2.1、someonly(Boolean)，只看内容评价，参数为bool值
+    2.2、relType(Number)，2为All，0为POSITIVE，1为NAGETIVE
  -->
 <template lang="html">
   <div class="ratesel">
@@ -38,62 +38,69 @@ const NAGETIVE = 1;
 const ALL = 2;
 
 export default {
-  data:function(){
+  data: function() {
     return {
-      someonly:false,
-      selType:ALL,
+      someonly: false,
+      selType: ALL,
     }
   },
-  props:{
-    preference:{
-      type:Object,
-      default:function(){
+  props: {
+    preference: {
+      type: Object,
+      default: function() {
         return {
-          all:'All',
-          positive:'POS',
-          nagetive:'NAG',
+          all: 'All',
+          positive: 'POS',
+          nagetive: 'NAG',
         };
       }
     },
-    ratings:{
-      type:Array,
-      default:function(){
+    ratings: {
+      type: Array,
+      default: function() {
         return [];
       }
     }
   },
-  computed:{
-    positives:function(){
+  computed: {
+    positives: function() {
       return this.ratings.filter(rating => {
         return rating.rateType === POSITIVE;
       })
     },
-    nagetives:function(){
+    nagetives: function() {
       return this.ratings.filter(rating => {
         return rating.rateType === NAGETIVE;
       })
     }
   },
-  methods:{
-    someonly_click:function(){
+  methods: {
+    someonly_click: function() {
       this.someonly = !this.someonly;
-      this.$emit('someonly',this.someonly);
+      this.$emit('someonly', this.someonly);
     },
-    selItemClass:function(index){
+    selItemClass: function(index) {
       let last = this.selectItems.length - 1;
       if (index === 0) return 'category-item-class_first';
       if (index === last) return 'category-item-class_last';
       return 'category-item-class_normal';
     },
-    switchSelType:function(index){
-    if (this.selType === index) return;
-      switch (index){
-        case 0:this.selType=POSITIVE;break;
-        case 1:this.selType=NAGETIVE;break;
-        case 2:this.selType=ALL;break;
-        default:break;
+    switchSelType: function(index) {
+      if (this.selType === index) return;
+      switch (index) {
+        case 0:
+          this.selType = POSITIVE;
+          break;
+        case 1:
+          this.selType = NAGETIVE;
+          break;
+        case 2:
+          this.selType = ALL;
+          break;
+        default:
+          break;
       }
-      this.$emit('selType',index);
+      this.$emit('selType', index);
     }
   }
 }
