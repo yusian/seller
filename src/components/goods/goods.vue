@@ -169,6 +169,7 @@ export default {
 .goods .goods-content {
     display: flex;
     overflow: hidden;
+    width: 100%;
 }
 .goods .menu-wrapper {
     flex: 0 0 80px;

@@ -1,7 +1,7 @@
 <!--
   1、外部需要传入参数：
     1.1、ratings:评价数组，计算评价个数
-    1.2、个性化标签名称，默认为：All,POSITIVE,NAGETIVE
+    1.2、preference:个性化标签名称，默认为：All,POSITIVE,NAGETIVE
   2、触发调用外部方法：
     2.1、someonly(Boolean)，只看内容评价，参数为bool值
     2.2、relType(Number)，2为All，0为POSITIVE，1为NAGETIVE

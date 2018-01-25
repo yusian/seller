@@ -1,3 +1,8 @@
+<!--
+  调用时需要传入两个参数：
+  1、score
+  2、size
+ -->
 <template lang="html">
   <div class="star">
     <div class="star-item" v-for="itemStyle in itemStyles" :class="itemStyle">
@@ -7,23 +12,23 @@
 
 <script>
 export default {
-  data: function(){
+  data: function() {
     return {
 
     };
   },
-  props:['size','score','count'],
-  computed:{
-    itemStyles:{
-      get:function(){
+  props: ['size', 'score', 'count'],
+  computed: {
+    itemStyles: {
+      get: function() {
         let count = this.count || 5;
         let score = this.score;
         let size = this.size;
         let styleArray = [];
-        while (count-- > 0){
-          if (score >= 1) styleArray.push('star'+size+'_on');
-          else if (score >= 0.5) styleArray.push('star'+size+'_half');
-          else styleArray.push('star'+size+'_off');
+        while (count-- > 0) {
+          if (score >= 1) styleArray.push('star' + size + '_on');
+          else if (score >= 0.5) styleArray.push('star' + size + '_half');
+          else styleArray.push('star' + size + '_off');
           if (score > 0) score--;
         }
         return styleArray;

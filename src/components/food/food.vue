@@ -88,13 +88,6 @@ export default {
   filters: {
     formateDate: function(timestamp) {
       return dateFormate(new Date(timestamp), 'YYYY-MM-dd HH:mm');
-      let date = new Date(timestamp);
-      let year = date.getFullYear();
-      let month = date.getMonth();
-      let day = date.getDay();
-      let hour = date.getHours();
-      let mini = date.getMinutes();
-      return year + '-' + month + '-' + day + ' ' + hour + ':' + mini;
     },
   },
   methods: {
@@ -201,8 +194,7 @@ export default {
     display: flex;
     justify-content: space-between;
 }
-.food .header .content .price-wrapper .price-info {
-    }
+.food .header .content .price-wrapper .price-info {}
 .food .header .content .price-wrapper .price {
     display: inline-block;
     font-size: 14px;
@@ -227,8 +219,7 @@ export default {
 .food .header .content .price-wrapper .old-price:first-letter {
     font-weight: normal;
 }
-.food .header .content .price-wrapper .buy {
-    }
+.food .header .content .price-wrapper .buy {}
 .food .header .content .price-wrapper .button {
     // float: right;
     font-size: 10px;
@@ -278,8 +269,7 @@ export default {
     padding: 18px 18px 0;
     border-bottom: 1px solid rgba(7,17,27,0.1);
 }
-.food .rating-panel .title {
-    }
+.food .rating-panel .title {}
 
 // 评价列表
 .food .rating-content {
