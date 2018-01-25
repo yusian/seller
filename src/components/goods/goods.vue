@@ -1,18 +1,19 @@
 <template lang="html">
   <div class="goods">
-    <div class="menu-wrapper" ref="menuWrapper">
-      <ul class="good-list" v-if="goods.length > 0">
-        <li v-for="(good,index) in goods" class="good-item" :class="{active:index===currentIndex}">
-          <div class="good-wrapper" @click="goodItemClick(index)">
-            <div class="content">
-              <span :class="classArray[good.type]" class="icon"></span>
-              <span class="text">{{good.name}}</span>
+    <div class="goods-content">
+      <div class="menu-wrapper" ref="menuWrapper">
+        <ul class="good-list" v-if="goods.length > 0">
+          <li v-for="(good,index) in goods" class="good-item" :class="{active:index===currentIndex}">
+            <div class="good-wrapper" @click="goodItemClick(index)">
+              <div class="content">
+                <span :class="classArray[good.type]" class="icon"></span>
+                <span class="text">{{good.name}}</span>
+              </div>
             </div>
-          </div>
-        </li>
-      </ul>
-    </div>
-    <div class="foods-wrapper" ref="foodsWrapper">
+          </li>
+        </ul>
+      </div>
+      <div class="foods-wrapper" ref="foodsWrapper">
       <ul class="good-list">
         <li v-for="(good,index) in goods" class="good-item food-list-hook">
           <h2 class="good-name">{{good.name}}</h2>
@@ -38,6 +39,7 @@
         </li>
       </ul>
     </div>
+    </div>
     <shopcart :seller="seller" :selectFoods="selectFoods"/>
     <transition>
     <fooddetail class="fooddetail" v-if="selectedFood" :food="selectedFood" @hidden="hiddenDetail"/>
@@ -52,19 +54,19 @@ import countctrl from '../countctrl/countctrl.vue'
 import data from '../../../data.json'
 import fooddetail from '../food/food.vue'
 export default {
-  data:function(){
+  data: function() {
     return {
-      goods:[],
-      sel_good:{},
-      foodOffsetArray:[],
-      foodListOffsetY:0,
-      selectedFood:null,
+      goods: [],
+      sel_good: {},
+      foodOffsetArray: [],
+      foodListOffsetY: 0,
+      selectedFood: null,
     };
   },
   props: ['seller'],
-  created:function(){
+  created: function() {
     this.goods = data.goods;
-    this.$nextTick(()=>{
+    this.$nextTick(() => {
       this._initScroll();
       this._calcScrollHeight();
     });
@@ -84,25 +86,25 @@ export default {
     countctrl,
     fooddetail,
   },
-  computed:{
-    classArray:{
-      get:function(){
+  computed: {
+    classArray: {
+      get: function() {
         return ['decrease', 'discount', 'guarantee', 'invoice', 'special'];
       }
     },
-    currentIndex:{
-      get:function(){
+    currentIndex: {
+      get: function() {
         let array = this.foodOffsetArray;
         let count = array.length;
-        for(let i = 0; i < count; i++){
+        for (let i = 0; i < count; i++) {
           let offsetY = array[i];
           if (this.foodListOffsetY < offsetY) return i;
         }
         return count;
       }
     },
-    selectFoods:{
-      get:function(){
+    selectFoods: {
+      get: function() {
         let foods = [];
         this.goods.forEach(good => {
           good.foods.forEach(food => {
@@ -113,12 +115,12 @@ export default {
       }
     }
   },
-  methods:{
-    _initScroll:function (){
-      this.menuScroll = new BScroll(this.$refs.menuWrapper,{
+  methods: {
+    _initScroll: function() {
+      this.menuScroll = new BScroll(this.$refs.menuWrapper, {
         click: true,
       });
-      this.foodsScroll = new BScroll(this.$refs.foodsWrapper,{
+      this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {
         probeType: 3,
         click: true,
       });
@@ -129,26 +131,26 @@ export default {
         this.foodListOffsetY = offsetY;
       })
     },
-    _calcScrollHeight:function(){
+    _calcScrollHeight: function() {
       let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook');
       let height = 0;
-      for(let i = 0; i < foodList.length; i++){
+      for (let i = 0; i < foodList.length; i++) {
         height += foodList[i].clientHeight;
         this.foodOffsetArray.push(height);
       }
     },
-    goodItemClick:function(index){
+    goodItemClick: function(index) {
       let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook');
       let el = foodList[index];
       this.foodsScroll.scrollToElement(el, 300);
     },
-    foodDetail:function(food){
+    foodDetail: function(food) {
       this.selectedFood = food;
       console.log(this.selectedFood);
       this.showDetail = true;
     },
-    hiddenDetail:function(){
-      if (this.selectedFood){
+    hiddenDetail: function() {
+      if (this.selectedFood) {
         this.showDetail = false;
         this.selectedFood = null;
       }
@@ -159,211 +161,211 @@ export default {
 
 <style lang="less">
 .goods {
-  position: absolute;
-  top: 174.5px;
-  left: 0;
-  right: 0;
-  bottom: 49px;
-  display: flex;
-  overflow: hidden;
+    flex: auto;
+    overflow: hidden;
+    display: flex;
+    margin-bottom: 45px;
+}
+.goods .goods-content {
+    display: flex;
+    overflow: hidden;
 }
 .goods .menu-wrapper {
-  flex: 0 0 80px;
-  width: 80px;
-  background: #f3f5f7;
-  // overflow: auto;
+    flex: 0 0 80px;
+    width: 80px;
+    background: #f3f5f7;
+    // overflow: auto;
 }
 .goods .menu-wrapper .good-list {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
 
 }
 .goods .menu-wrapper .good-list .good-item.active {
-  background: #fff;
-  font-weight: 700;
-  margin-top: -1px;
+    background: #fff;
+    font-weight: 700;
+    margin-top: -1px;
 }
 .goods .menu-wrapper .good-list .good-item .good-wrapper {
-  margin: 0 12px;
-  border-bottom: 1px solid rgba(7,17,27,0.1);
+    margin: 0 12px;
+    border-bottom: 1px solid rgba(7,17,27,0.1);
 
-  height: 54px;
-  display: flex;
-  align-items: center;
+    height: 54px;
+    display: flex;
+    align-items: center;
 }
 .goods .menu-wrapper .good-list .good-item.active .good-wrapper,
-.goods .menu-wrapper .good-list .good-item:last-child .good-wrapper
-{
-  border-bottom: 0;
+.goods .menu-wrapper .good-list .good-item:last-child .good-wrapper {
+    border-bottom: 0;
 }
 
 .goods .menu-wrapper .good-list .good-item .content {
-  font-size: 0px;
+    font-size: 0;
 }
 .goods .menu-wrapper .good-list .good-item .content .icon {
-  display: inline-block;
-  vertical-align: top;
+    display: inline-block;
+    vertical-align: top;
 }
 .goods .menu-wrapper .good-list .good-item .content .decrease {
-  margin-right: 2px;
-  width: 12px;
-  height: 12px;
-  background-image: url('decrease_1@2x.png');
-  background-size: 12px 12px;
-  background-repeat: no-repeat;
+    margin-right: 2px;
+    width: 12px;
+    height: 12px;
+    background-image: url("decrease_1@2x.png");
+    background-size: 12px 12px;
+    background-repeat: no-repeat;
 }
 .goods .menu-wrapper .good-list .good-item .content .discount {
-  margin-right: 2px;
-  width: 12px;
-  height: 12px;
-  background-image: url('discount_1@2x.png');
-  background-size: 12px 12px;
-  background-repeat: no-repeat;
+    margin-right: 2px;
+    width: 12px;
+    height: 12px;
+    background-image: url("discount_1@2x.png");
+    background-size: 12px 12px;
+    background-repeat: no-repeat;
 }
 .goods .menu-wrapper .good-list .good-item .content .guarantee {
-  margin-right: 2px;
-  width: 12px;
-  height: 12px;
-  background-image: url('guarantee_1@2x.png');
-  background-size: 12px 12px;
-  background-repeat: no-repeat;
+    margin-right: 2px;
+    width: 12px;
+    height: 12px;
+    background-image: url("guarantee_1@2x.png");
+    background-size: 12px 12px;
+    background-repeat: no-repeat;
 }
 .goods .menu-wrapper .good-list .good-item .content .invoice {
-  margin-right: 2px;
-  width: 12px;
-  height: 12px;
-  background-image: url('invoice_1@2x.png');
-  background-size: 12px 12px;
-  background-repeat: no-repeat;
+    margin-right: 2px;
+    width: 12px;
+    height: 12px;
+    background-image: url("invoice_1@2x.png");
+    background-size: 12px 12px;
+    background-repeat: no-repeat;
 }
 .goods .menu-wrapper .good-list .good-item .content .special {
-  margin-right: 2px;
-  width: 12px;
-  height: 12px;
-  background-image: url('special_1@2x.png');
-  background-size: 12px 12px;
-  background-repeat: no-repeat;
+    margin-right: 2px;
+    width: 12px;
+    height: 12px;
+    background-image: url("special_1@2x.png");
+    background-size: 12px 12px;
+    background-repeat: no-repeat;
 }
 .goods .menu-wrapper .good-list .good-item .content .text {
-  line-height: 14px;
-  font-size: 12px;
-  display: inline;
+    line-height: 14px;
+    font-size: 12px;
+    display: inline;
 }
 
-.good-list,
-.food-list {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
+.food-list,
+.good-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
 }
 .good-list .good-item.active {
-  // background: #fff;
+    // background: #fff;
 }
 .good-list .good-item .good-name {
-  background: #f3f5f7;
-  margin: 0;
-  height: 26px;
-  font-size: 12px;
-  color: rgb(147,153,159);
-  border-left:2px solid #d9dde1;
-  line-height: 26px;
-  padding-left: 14px;
+    background: #f3f5f7;
+    margin: 0;
+    height: 26px;
+    font-size: 12px;
+    color: rgb(147,153,159);
+    border-left: 2px solid #d9dde1;
+    line-height: 26px;
+    padding-left: 14px;
 }
 
 .food-list .food-item {
-  margin: 18px 18px 0 18px;
-  padding-bottom: 18px;
-  display: flex;
-  position: relative;
-  border-bottom: 1px solid rgba(7,17,27,0.1);
+    margin: 18px 18px 0;
+    padding-bottom: 18px;
+    display: flex;
+    position: relative;
+    border-bottom: 1px solid rgba(7,17,27,0.1);
 }
 .food-list .food-item:last-child {
-  border-bottom: 0;
+    border-bottom: 0;
 }
 .food-list .food-item .icon {
-  width: 57px;
-  height: 57px;
-  flex: 0 0 57px;
-  display: inline-block;
+    width: 57px;
+    height: 57px;
+    flex: 0 0 57px;
+    display: inline-block;
 }
 .food-list .food-item .icon img {
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
 }
 .food-list .food-item .content {
-  display: inline-block;
-  padding-top: 2px;
-  padding-left: 10px;
-  flex: auto;
-  overflow: hidden;
+    display: inline-block;
+    padding-top: 2px;
+    padding-left: 10px;
+    flex: auto;
+    overflow: hidden;
 }
 .food-list .food-item .food-name {
-  margin: 0px;
-  font-size: 14px;
-  line-height: 14px;
-  color: rgb(7,17,27);
+    margin: 0;
+    font-size: 14px;
+    line-height: 14px;
+    color: rgb(7,17,27);
 }
 .food-list .food-item .description,
 .food-list .food-item .seller {
-  font-size: 10px;
-  line-height: 10px;
-  margin: 8px 0 0 0;
-  color: rgb(147,153,159);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+    font-size: 10px;
+    line-height: 10px;
+    margin: 8px 0 0;
+    color: rgb(147,153,159);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
-.food-list .food-item .seller span:first-child{
-  margin-right: 12px;
-  display: inline-block;
+.food-list .food-item .seller span:first-child {
+    margin-right: 12px;
+    display: inline-block;
 }
 .food-list .food-item .price {
-  font-size: 0;
-  margin: 0;
-  display: inline-block;
+    font-size: 0;
+    margin: 0;
+    display: inline-block;
 }
 .food-list .food-item .price .value {
-  font-size: 14px;
-  color: red;
-  font-weight: 700;
-  line-height: 24px;
-  display: inline-block;
+    font-size: 14px;
+    color: red;
+    font-weight: 700;
+    line-height: 24px;
+    display: inline-block;
 }
 .food-list .food-item .price .value:first-letter {
-  font-size: 12px;
+    font-size: 12px;
 }
 .food-list .food-item .price .old-price {
-  font-size: 10px;
-  display: inline-block;
-  margin-left: 8px;
-  line-height: 24px;
-  vertical-align: top;
-  color: rgb(147,153,159);
-  text-decoration: line-through;
+    font-size: 10px;
+    display: inline-block;
+    margin-left: 8px;
+    line-height: 24px;
+    vertical-align: top;
+    color: rgb(147,153,159);
+    text-decoration: line-through;
 }
 .food-list .food-item .countctrl-wrapper {
-  position: absolute;
-  bottom:10;
-  right:0px;
-  font-size: 24px;
-  display: inline-block;
-  line-height: 24px;
-  color: rgb(0,160,220);
+    position: absolute;
+    bottom: 10;
+    right: 0;
+    font-size: 24px;
+    display: inline-block;
+    line-height: 24px;
+    color: rgb(0,160,220);
 }
 .goods .foods-wrapper {
-  flex: auto;
-  overflow: hidden;
+    flex: auto;
+    overflow: hidden;
 }
 
 .fooddetail {
-  transition: all 0.4s;
+    transition: all 0.4s;
 }
 .fooddetail.v-enter,
 .fooddetail.v-leave-to {
-  transform: translate3d(100%,0,0);
+    transform: translate3d(100%,0,0);
 }
 .fooddetail.v-enter-to {
-  transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
 }
 </style>

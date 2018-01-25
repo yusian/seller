@@ -6,9 +6,13 @@
 </template>
 
 <script>
-export default {
-}
+export default {}
 </script>
 
-<style lang="css">
+<style lang="less">
+.business {
+    height: 100%;
+    background: rgba(0,200,200,1);
+    color: white;
+}
 </style>
