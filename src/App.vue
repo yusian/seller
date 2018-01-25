@@ -1,0 +1,60 @@
+<template>
+  <div id="app">
+    <v-header :seller="seller"></v-header>
+    <div class="tabbar">
+      <span class="tabbar-item">
+        <router-link to="/goods">商品</router-link>
+      </span>
+      <span class="tabbar-item">
+        <router-link to="/comments">评论</router-link>
+      </span>
+      <span class="tabbar-item">
+        <router-link to="/business">商家</router-link>
+      </span>
+
+    </div>
+    <router-view :seller="seller"></router-view>
+  </div>
+</template>
+
+<script>
+import Header from '@/components/header/header'
+import data from '../data.json'
+export default {
+  name: 'App',
+  data: function(){
+    return {
+      seller:[],
+    }
+  },
+  components:{
+    'v-header':Header,
+  },
+  created:function(){
+    this.seller = data.seller;
+    // this.$http.get('./api/seller')
+    // .then(response => {
+    //   this.seller = response.body.data;
+    //   console.log(response);
+    // })
+    // console.log(data.seller);
+  }
+}
+</script>
+
+<style>
+
+.tabbar {
+  display: flex;
+  line-height: 40px;
+  text-align: center;
+  border-bottom: 0.5px solid #ddd;
+}
+.tabbar .tabbar-item {
+  flex: 1;
+}
+.tabbar .tabbar-item .router-link-active {
+  color: red;
+  text-decoration: none;
+}
+</style>
