@@ -30,7 +30,7 @@
           <ratesel :preference="ratePrefe" :ratings="ratings" @someonly="someonly" @selType="switchSelType"></ratesel>
         </div>
         <ul class="rating-list">
-          <li class="rating-item" v-for="rating in ratings" v-show="showRateItem(rating)">
+          <li class="rating-item" v-for="rating in ratings" v-if="showRateItem(rating)">
               <div class="rating-item-wrapper">
                 <div class="avatar"><img :src="rating.avatar" alt="头像"></div>
                 <div class="rate-content">
@@ -40,9 +40,9 @@
                   </div>
                   <div class="rating-quota">
                     <star size=24 :score="rating.score"></star>
-                    <span class="delivery">{{rating.deliveryTime}}分钟送达</span>
+                    <span class="delivery" v-show="rating.deliveryTime">{{rating.deliveryTime}}分钟送达</span>
                   </div>
-                  <div class="rate-text" v-show="rating.text.length > 0">{{rating.text}}</div>
+                  <div class="rate-text" v-show="rating.text">{{rating.text}}</div>
                   <div class="recommond">
                     <span class="icon" :class="(rating.rateType == 0)?'icon-thumb_up':'icon-thumb_down'"></span>
                     <span class="recommond-text" v-for="text in rating.recommend">{{text}}</span>
@@ -62,7 +62,7 @@ const POSITIVE = 0;
 const NAGETIVE = 1;
 import star from '@/components/star/star.vue'
 import ratesel from '@/components/ratesel/ratesel.vue'
-import jsonData from '@/../data.json'
+import jsonData from '@/../static/data.json'
 import BetterScroll from 'better-scroll'
 import {
   dateFormate
@@ -70,7 +70,7 @@ import {
 export default {
   data: function() {
     return {
-      ratings: null,
+      ratings: [],
       ratePrefe: {
         all: '全部',
         positive: '满意',
@@ -104,24 +104,30 @@ export default {
     },
     showRateItem: function(rating) {
       let type_bool = (this.selType === rating.rateType) || this.selType === ALL;
-      let hasContent = !this.isOnly || (rating.text.length > 0);
+      let hasContent = !this.isOnly || (rating.text);
       return type_bool && hasContent;
     }
   },
   created: function() {
-    this.ratings = jsonData.ratings;
-    this.$nextTick(() => {
-      this.scroll = new BetterScroll(this.$refs.scroll, {
-        click: true,
-      })
-    });
-  }
+    setTimeout(() => { // 模拟网络请求，延时1.5秒加载数据
+      this.$nextTick(() => {
+        this.ratings = jsonData.ratings;
+
+        this.$nextTick(() => {
+          this.scroll = new BetterScroll(this.$refs.scroll, {
+            click: true,
+          })
+        });
+
+      });
+    }, 400);
+  },
 }
 </script>
 
 <style lang="css">
 .comments {
-  max-height: 100%;
+  height: 100%;
   font-size: 0;
   background: rgb(240, 240, 240);
   overflow: hidden;
@@ -223,7 +229,7 @@ export default {
 }
 .rating-list .rating-item .rating-item-wrapper {
   border-bottom: 0.5px solid rgba(7, 17, 27, 0.2);
-  padding-bottom: 18px;
+  padding-bottom: 10px;
   display: flex;
   flex-direction: row;
 }
@@ -291,6 +297,7 @@ export default {
   font-size: 12px;
   line-height: 16px;
   display: inline-block;
+  margin-bottom: 8px;
 }
 .rating-item .rate-content .recommond .icon-thumb_up {
   color: rgb(0, 160, 220);
@@ -300,6 +307,7 @@ export default {
 }
 .rating-item .rate-content .recommond .recommond-text {
   font-size: 9px;
+  line-height: 16px;
   color: rgb(147, 153, 159);
   display: inline-block;
   padding: 0 6px;

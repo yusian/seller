@@ -13,25 +13,31 @@
       </span>
 
   </div>
-  <router-view :seller="seller"></router-view>
+  <keep-alive>
+    <router-view :seller="seller"></router-view>
+  </keep-alive>
 </div>
 </template>
 
 <script>
 import Header from '@/components/header/header'
-import data from '../data.json'
+import data from '@/../static/data.json'
 export default {
   name: 'App',
   data: function() {
     return {
-      seller: [],
+      seller: {},
     }
   },
   components: {
     'v-header': Header,
   },
   created: function() {
-    this.seller = data.seller;
+    setTimeout(() => { // 默认网络请求数据延时加载
+      this.$nextTick(() => {
+        this.seller = data.seller;
+      });
+    }, 700);
     // this.$http.get('./api/seller')
     // .then(response => {
     //   this.seller = response.body.data;
@@ -73,6 +79,11 @@ body,
 
 .tabbar .tabbar-item {
   flex: 1;
+}
+
+.tabbar-item a {
+  display: inline-block;
+  width: 100%;
 }
 
 .tabbar .tabbar-item .router-link-active {

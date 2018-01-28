@@ -2,6 +2,7 @@
   调用时需要传入两个参数：
   1、score
   2、size
+  <star size=48 score=5.0></star>
  -->
 <template lang="html">
   <div class="star">

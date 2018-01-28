@@ -5,6 +5,7 @@
   2、触发调用外部方法：
     2.1、someonly(Boolean)，只看内容评价，参数为bool值
     2.2、relType(Number)，2为All，0为POSITIVE，1为NAGETIVE
+    <ratesel ratings="" preference="" @someonly="" @relType=""/>
  -->
 <template lang="html">
   <div class="ratesel">
@@ -78,12 +79,6 @@ export default {
     someonly_click: function() {
       this.someonly = !this.someonly;
       this.$emit('someonly', this.someonly);
-    },
-    selItemClass: function(index) {
-      let last = this.selectItems.length - 1;
-      if (index === 0) return 'category-item-class_first';
-      if (index === last) return 'category-item-class_last';
-      return 'category-item-class_normal';
     },
     switchSelType: function(index) {
       if (this.selType === index) return;

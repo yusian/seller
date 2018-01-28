@@ -46,38 +46,38 @@
 import countctrl from '../countctrl/countctrl'
 import bscroll from 'better-scroll'
 export default {
-  data:function(){
+  data: function() {
     return {
-      payEnable:false,
-      showShopList:false
+      payEnable: false,
+      showShopList: false
     }
   },
-  props:{
-    seller:{
-      Type:Object,
+  props: {
+    seller: {
+      Type: Object,
     },
-    selectFoods:{
-      type:Array,
-      default:function(){
+    selectFoods: {
+      type: Array,
+      default: function() {
         return [];
       }
     },
   },
-  components:{
+  components: {
     countctrl,
   },
-  computed:{
-    totalPrice:{
-      get:function(){
+  computed: {
+    totalPrice: {
+      get: function() {
         let price = 0;
         this.selectFoods.forEach(food => {
-          price += food.price*food.count;
+          price += food.price * food.count;
         });
         return price;
       }
     },
-    totalCount:{
-      get:function(){
+    totalCount: {
+      get: function() {
         let count = 0;
         this.selectFoods.forEach(food => {
           count += food.count;
@@ -86,46 +86,45 @@ export default {
         return count;
       }
     },
-    payEnableStr:{
-      get:function(){
-        if (this.totalPrice === 0){
+    payEnableStr: {
+      get: function() {
+        if (this.totalPrice === 0) {
           this.payEnable = false;
-          return '¥'+' '+this.seller.minPrice+'起送';
-        }else if (this.totalPrice < this.seller.minPrice){
+          return '¥' + ' ' + this.seller.minPrice + '起送';
+        } else if (this.totalPrice < this.seller.minPrice) {
           this.payEnable = false;
-          return '还差 ¥'+(this.seller.minPrice-this.totalPrice)+' 起送';
-        }else{
+          return '还差 ¥' + (this.seller.minPrice - this.totalPrice) + ' 起送';
+        } else {
           this.payEnable = true;
           return '去结算';
         }
       }
     }
   },
-  methods:{
-    shopcartClick:function(){
+  methods: {
+    shopcartClick: function() {
       if (!this.totalCount) return;
       this.showShopList = !this.showShopList;
-      if (this.showShopList){
-        this.$nextTick(()=>{
-          if (!this.listScroll){
+      if (this.showShopList) {
+        this.$nextTick(() => {
+          if (!this.listScroll) {
             this.listScroll = new bscroll(this.$refs.listWrapper, {
               click: true,
             });
-          }else{
+          } else {
             this.listScroll.refresh();
           }
-          console.log(this.listScroll);
         });
       }
     },
-    emptyList:function(){
+    emptyList: function() {
       this.selectFoods.forEach(food => {
         food.count = 0;
       })
     },
-    pay:function(){
+    pay: function() {
       if (this.payEnable == false) return;
-      alert(this.totalPrice+"元已支付完成！");
+      alert(this.totalPrice + "元已支付完成！");
       this.emptyList();
     }
   }
@@ -270,7 +269,7 @@ export default {
 }
 
 .shopcart .itemlist-wrapper {
-  max-height: 200px;
+  max-height: 400px;
   overflow: hidden;
 }
 .shopcart .shoplist .itemlist {

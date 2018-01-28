@@ -49,10 +49,10 @@
 
 <script>
 import BScroll from 'better-scroll';
-import shopcart from '../shopcart/shopcart.vue'
-import countctrl from '../countctrl/countctrl.vue'
-import data from '../../../data.json'
-import fooddetail from '../food/food.vue'
+import shopcart from '@/components/shopcart/shopcart.vue'
+import countctrl from '@/components/countctrl/countctrl.vue'
+import data from '@/../static/data.json'
+import fooddetail from '@/components/food/food.vue'
 export default {
   data: function() {
     return {
@@ -65,11 +65,15 @@ export default {
   },
   props: ['seller'],
   created: function() {
-    this.goods = data.goods;
-    this.$nextTick(() => {
-      this._initScroll();
-      this._calcScrollHeight();
-    });
+    setTimeout(() => {
+      this.$nextTick(() => {
+        this.goods = data.goods;
+        this.$nextTick(() => {
+          this._initScroll();
+          this._calcScrollHeight();
+        });
+      });
+    }, 500);
     // this.$http.get('./api/goods')
     // .then(response => {
     //   this.goods = response.body.data;
@@ -117,21 +121,26 @@ export default {
   },
   methods: {
     _initScroll: function() {
-      this.menuScroll = new BScroll(this.$refs.menuWrapper, {
-        click: true,
-      });
-      this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {
-        probeType: 3,
-        click: true,
-      });
-      this.foodsScroll.on('scroll', offset => {
-        let offsetY = offset.y;
-        if (offsetY > 0) offsetY = 0;
-        if (offsetY < 0) offsetY = -offsetY;
-        this.foodListOffsetY = offsetY;
-      })
+      if (this.$refs.menuWrapper) { // 保证能取到DOM.menuWrapper
+        this.menuScroll = new BScroll(this.$refs.menuWrapper, {
+          click: true,
+        });
+      }
+      if (this.$refs.foodsWrapper) { // 保证能取到DOM.foodswrapper
+        this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {
+          probeType: 3,
+          click: true,
+        });
+        this.foodsScroll.on('scroll', offset => {
+          let offsetY = offset.y;
+          if (offsetY > 0) offsetY = 0;
+          if (offsetY < 0) offsetY = -offsetY;
+          this.foodListOffsetY = offsetY;
+        })
+      }
     },
     _calcScrollHeight: function() {
+      if (!this.$refs.foodsWrapper) return;
       let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook');
       let height = 0;
       for (let i = 0; i < foodList.length; i++) {
@@ -146,7 +155,6 @@ export default {
     },
     foodDetail: function(food) {
       this.selectedFood = food;
-      console.log(this.selectedFood);
       this.showDetail = true;
     },
     hiddenDetail: function() {
