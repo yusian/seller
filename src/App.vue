@@ -22,11 +22,19 @@
 <script>
 import Header from '@/components/header/header'
 import data from '@/../static/data.json'
+import {
+  urlParse
+} from '@/common/js/util.js'
 export default {
   name: 'App',
   data: function() {
     return {
-      seller: {},
+      seller: {
+        id: (() => {
+          let queryParam = urlParse();
+          return queryParam.id;
+        })(),
+      }
     }
   },
   components: {
@@ -35,7 +43,8 @@ export default {
   created: function() {
     setTimeout(() => { // 默认网络请求数据延时加载
       this.$nextTick(() => {
-        this.seller = data.seller;
+        // 对象合并，浅拷贝机制
+        this.seller = Object.assign({}, this.seller, data.seller);
       });
     }, 700);
     // this.$http.get('./api/seller')

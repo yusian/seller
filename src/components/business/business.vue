@@ -68,10 +68,16 @@ import JSON from '@/../static/data.json'
 import star from '@/components/star/star.vue'
 import BetterScroll from 'better-scroll'
 import shopcart from '@/components/shopcart/shopcart.vue'
+import {
+  saveToLocal,
+  loadFromLocal
+} from '@/common/js/store.js'
 export default {
   data: function() {
     return {
-      isFavorite: false,
+      isFavorite: (() => {
+        return loadFromLocal(this.seller.id, 'favorite', false);
+      })(),
     }
   },
   props: {
@@ -83,6 +89,7 @@ export default {
     favorite_click: function() {
       console.log(this.isFavorite);
       this.isFavorite = !this.isFavorite;
+      saveToLocal(this.seller.id, 'favorite', this.isFavorite);
     },
     _reloadData: function() {
       this.scroll.refresh();
@@ -98,7 +105,6 @@ export default {
     shopcart
   },
   mounted: function() {
-    console.log('mounted...');
     this.scroll = new BetterScroll(this.$refs.scroll, {
       click: true
     });
@@ -108,7 +114,6 @@ export default {
     this._reloadData();
   },
   updated: function() {
-    console.log('updated...');
     this._reloadData();
   }
 }
