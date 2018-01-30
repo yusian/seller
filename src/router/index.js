@@ -7,19 +7,17 @@ import Business from '@/components/business/business'
 Vue.use(Router)
 
 export default new Router({
-  routes: [
-    {
-      path: '/',
-      redirect: '/goods',
-    },{
-      path: '/goods',
-      component: Goods,
-    },{
-      path: '/comments',
-      component: Comments,
-    },{
-      path: '/business',
-      component: Business,
-    }
-  ]
+  routes: [{
+    path: '/',
+    redirect: '/goods',
+  }, {
+    path: '/goods',
+    component: Goods,
+  }, {
+    path: '/comments',
+    component: Comments,
+  }, {
+    path: '/business',
+    component: Business,
+  }]
 })

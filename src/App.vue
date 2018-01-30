@@ -32,7 +32,7 @@ export default {
       seller: {
         id: (() => {
           let queryParam = urlParse();
-          return queryParam.id;
+          return queryParam.id || 12345;
         })(),
       }
     }

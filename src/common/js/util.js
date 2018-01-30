@@ -5,6 +5,7 @@
  */
 export function urlParse() {
   let search = window.location.search;
+  if (!search) search = '?id=12345';
   let obj = {};
   let reg = RegExp('[?&][^?&]+=[^?&]+', 'g');
   let arr = search.match(reg);
